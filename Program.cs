@@ -33,6 +33,20 @@ public class BST<K, V> where K : IComparable<K>
         node.size = 1 + Size(node.left) + Size(node.right);
         return node;
     }
+
+    public V Get(K key)
+    {
+        Node node = root;
+        while (node != null)
+        {
+            int cmp = key.CompareTo(node.key);
+            if (cmp < 0) node = node.left;
+            else if (cmp > 0) node = node.right;
+            else return node.value;
+        }
+        return default(V);
+    }
+    
     public int Size()
     {
         return Size(root);
