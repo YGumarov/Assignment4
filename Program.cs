@@ -96,4 +96,18 @@ public class BST<K, V> where K : IComparable<K>
         if (node == null) return 0;
         else return node.size;
     }
+    public IEnumerable<KeyValuePair<K, V>> Iterator()
+    {
+        Queue<KeyValuePair<K, V>> queue = new Queue<KeyValuePair<K, V>>();
+        InOrder(root, queue);
+        return queue;
+    }
+
+    private void InOrder(Node node, Queue<KeyValuePair<K, V>> queue)
+    {
+        if (node == null) return;
+        InOrder(node.left, queue);
+        queue.Enqueue(new KeyValuePair<K, V>(node.key, node.value));
+        InOrder(node.right, queue);
+    }
 }
