@@ -32,6 +32,45 @@
         node.size = 1 + Size(node.left) + Size(node.right);
         return node;
     }
+    public V Get(K key)
+    {
+        Node node = root;
+        while (node != null)
+        {
+            int cmp = key.CompareTo(node.key);
+            if (cmp < 0) node = node.left;
+            else if (cmp > 0) node = node.right;
+            else return node.value;
+        }
+        return default(V);
+    }
+
+    public void Delete(K key)
+    {
+        root = Delete(root, key);
+    }
+
+    private Node Delete(Node node, K key)
+    {
+        if (node == null) return null;
+
+        int cmp = key.CompareTo(node.key);
+        if (cmp < 0) node.left = Delete(node.left, key);
+        else if (cmp > 0) node.right = Delete(node.right, key);
+        else
+        {
+            if (node.left == null) return node.right;
+            if (node.right == null) return node.left;
+
+            Node temp = node;
+            node = Min(temp.right);
+            node.right = DeleteMin(temp.right);
+            node.left = temp.left;
+        }
+
+        node.size = 1 + Size(node.left) + Size(node.right);
+        return node;
+    }
     private Node Min(Node node)
     {
         if (node.left == null) return node;
