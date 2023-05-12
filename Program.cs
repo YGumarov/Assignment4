@@ -47,7 +47,19 @@ public class BST<K, V> where K : IComparable<K>
 
         return default(V);
     }
-    
+    private Node Min(Node node)
+    {
+        if (node.left == null) return node;
+        else return Min(node.left);
+    }
+
+    private Node DeleteMin(Node node)
+    {
+        if (node.left == null) return node.right;
+        node.left = DeleteMin(node.left);
+        node.size = 1 + Size(node.left) + Size(node.right);
+        return node;
+    }
     public int Size()
     {
         return Size(root);
