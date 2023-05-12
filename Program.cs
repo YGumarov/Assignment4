@@ -1,4 +1,15 @@
-﻿public class BST<K, V> where K : IComparable<K>
+﻿BST<int, string> tree = new BST<int, string>();
+tree.Put(5, "five");
+tree.Put(3, "three");
+tree.Put(7, "seven");
+
+foreach (var elem in tree.Iterator())
+{
+    Console.WriteLine("key is " + elem.Key + " and value is " + elem.Value);
+}
+
+
+public class BST<K, V> where K : IComparable<K>
 {
     private Node root;
     private class Node
@@ -32,6 +43,7 @@
         node.size = 1 + Size(node.left) + Size(node.right);
         return node;
     }
+
     public V Get(K key)
     {
         Node node = root;
@@ -71,6 +83,7 @@
         node.size = 1 + Size(node.left) + Size(node.right);
         return node;
     }
+
     private Node Min(Node node)
     {
         if (node.left == null) return node;
@@ -84,7 +97,7 @@
         node.size = 1 + Size(node.left) + Size(node.right);
         return node;
     }
-    
+
     public int Size()
     {
         return Size(root);
@@ -94,5 +107,20 @@
     {
         if (node == null) return 0;
         else return node.size;
+    }
+
+    public IEnumerable<KeyValuePair<K, V>> Iterator()
+    {
+        Queue<KeyValuePair<K, V>> queue = new Queue<KeyValuePair<K, V>>();
+        InOrder(root, queue);
+        return queue;
+    }
+
+    private void InOrder(Node node, Queue<KeyValuePair<K, V>> queue)
+    {
+        if (node == null) return;
+        InOrder(node.left, queue);
+        queue.Enqueue(new KeyValuePair<K, V>(node.key, node.value));
+        InOrder(node.right, queue);
     }
 }
